@@ -109,7 +109,7 @@ let velocity = {
 }
 
 let pipeVelocity = {
-    x: -3,
+    x: -1.5,
     y: 0
 }
 
