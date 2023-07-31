@@ -13,6 +13,7 @@ const easy = document.querySelector('#easy')
 const medium = document.querySelector('#medium')
 const hard = document.querySelector('#hard')
 const impossible = document.querySelector('#impossible')
+const pimage = document.querySelector('#pimage')
 
 
 // variables
@@ -71,13 +72,14 @@ class Circle {
 }
 
 class Pipe {
-    constructor(x, y, height, width, color, velocity) {
+    constructor(x, y, height, width, color, velocity, image) {
         this.x = x
         this.y = y
         this.height = height
         this.width = width
         this.color = color
         this.velocity = velocity
+        this.image = image
     }
 
     draw() {
@@ -85,6 +87,7 @@ class Pipe {
         ctx.fillStyle = this.color
         ctx.rect(this.x, this.y, this.width, this.height)
         ctx.fill()
+        
     }
 
     update() {
