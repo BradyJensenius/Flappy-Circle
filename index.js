@@ -104,18 +104,8 @@ window.addEventListener('mousemove', (event) => {
 let circle
 let pipes
 
-let velocity = {
-    x: 0,
-    y: 1
-}
-
-let pipeVelocity = {
-    x: -1.5,
-    y: 0
-}
-
 function init() {
-    circle = new Circle(canvas.width/2, canvas.height/2, 30, 'red', 3, velocity)
+    circle = new Circle(canvas.width/2, canvas.height/2, 30, 'red', 3, {x:0, y:1})
     pipes = []
     score = 0
     scoreEl.innerHTML = score
@@ -124,8 +114,8 @@ function init() {
 
 function pipespawn() {
     let pos = randomInt(-1, -1000)
-    pipes.push(new Pipe(canvas.width, pos, 1000, 100, 'green', pipeVelocity)) 
-    pipes.push(new Pipe(canvas.width, 1300+pos, 1000, 100, 'green', pipeVelocity)) 
+    pipes.push(new Pipe(canvas.width, pos, 1000, 100, 'green', {x:-1.5, y:0})) 
+    pipes.push(new Pipe(canvas.width, 1300+pos, 1000, 100, 'green', {x:-1.5, y:0})) 
 }
 
 function clamp(min, max, value) {
@@ -158,7 +148,7 @@ function animate() {
             endscreen.style.display = 'flex'
             clearInterval(timer)
             imposonly = false
-            velocity.x = 0
+            circle.velocity.x = 0
         }
         if(circle.x > pipe.x+pipe.width && circle.x < pipe.x+pipe.width+2)
         {
@@ -171,7 +161,7 @@ function animate() {
         }
         if (imposonly&& score > 0)
         {
-            velocity.x = randomInt(-4,4)
+            circle.velocity.x = randomInt(-4,4)
         }
     })
     
@@ -223,4 +213,3 @@ addEventListener('click', () => {
     if (mousePos.x < circle.x +circle.radius+hitbox && mousePos.x > circle.x-circle.radius-hitbox && mousePos.y > circle.y-circle.radius-hitbox && mousePos.y < circle.y+circle.radius+hitbox)
     circle.velocity.y = -3
 })
-
