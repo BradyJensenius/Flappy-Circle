@@ -17,7 +17,7 @@ const impossible = document.querySelector('#impossible')
 
 // variables
 const GRAVITY = 0.05
-const FRICTION = 0.8
+const FRICTION = 0.2
 let hitbox = 0
 let imposonly = false
 
