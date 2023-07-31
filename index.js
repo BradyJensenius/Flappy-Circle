@@ -19,6 +19,7 @@ const impossible = document.querySelector('#impossible')
 const GRAVITY = 0.05
 const FRICTION = 0.8
 let hitbox = 0
+let imposonly = false
 
 // utility Functions
 function randomInt(min, max) {
@@ -123,8 +124,8 @@ function init() {
 
 function pipespawn() {
     let pos = randomInt(-1, -1000)
-    pipes.push(new Pipe(canvas.width-105, pos, 1000, 100, 'green', pipeVelocity)) 
-    pipes.push(new Pipe(canvas.width-105, 1300+pos, 1000, 100, 'green', pipeVelocity)) 
+    pipes.push(new Pipe(canvas.width, pos, 1000, 100, 'green', pipeVelocity)) 
+    pipes.push(new Pipe(canvas.width, 1300+pos, 1000, 100, 'green', pipeVelocity)) 
 }
 
 function clamp(min, max, value) {
@@ -149,26 +150,34 @@ function animate() {
     circle.update() 
     pipes.forEach((pipe, index)=> {
         pipe.update()
-        let distance = Math.sqrt((clamp(pipe.x, pipe.x+100, circle.x)-circle.x)**2 + (clamp(pipe.y, pipe.y+1000, circle.y)-circle.y)**2)
+        let distance = Math.sqrt((clamp(pipe.x, pipe.x+pipe.width, circle.x)-circle.x)**2 + (clamp(pipe.y, pipe.y+1000, circle.y)-circle.y)**2)
         if (distance < circle.radius)
         {
             cancelAnimationFrame(animationId)
             bigScoreEl.innerHTML = score
             endscreen.style.display = 'flex'
             clearInterval(timer)
+            imposonly = false
+            velocity.x = 0
         }
-        if(circle.x > pipe.x && circle.x < pipe.x+1)
+        if(circle.x > pipe.x+pipe.width && circle.x < pipe.x+pipe.width+2)
         {
             score+=0.5
             scoreEl.innerHTML = score
         }
-        if(pipe.x+100 < 0)
+        if(pipe.x+pipe.width < 0)
         {
             pipes.splice(index, 1)
+        }
+        if (imposonly&& score > 0)
+        {
+            velocity.x = randomInt(-4,4)
         }
     })
     
 }
+
+let timer
 
 easy.addEventListener('click', () => {
     hitbox = 1000
@@ -195,14 +204,15 @@ hard.addEventListener('click', () => {
 })
 
 impossible.addEventListener('click', () => {
-    hitbox = -28
+    hitbox = -6
     init()
     animate() 
     timer = setInterval(pipespawn, 4000)
     diffuculty.style.display = 'none'
+    imposonly = true
 })
 
-let timer
+
 startGameBtn.addEventListener('click', () => {
     diffuculty.style.display = 'flex'
     endscreen.style.display = 'none'
